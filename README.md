@@ -1,3 +1,4 @@
-# MILC Token Contract (ERC20)
+# Ethereum Smart Contracts
 
-MILC (MIcro Licensing Coin)
+- MILC (MIcro Licensing Coin)
+- MLT (MIcro Licensing Token)
