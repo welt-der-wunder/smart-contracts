@@ -1,0 +1,1 @@
+echo "var storageOutput=`solc --optimize --combined-json abi,bin,interface $1.sol`" > $1.js
