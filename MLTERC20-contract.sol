@@ -167,10 +167,10 @@ abstract contract Ownable is Context {
      * NOTE: Renouncing ownership will leave the contract without an owner,
      * thereby removing any functionality that is only available to the owner.
      */
-    function renounceOwnership() public virtual onlyOwner {
-        emit OwnershipTransferred(_owner, address(0));
-        _owner = address(0);
-    }
+    //function renounceOwnership() public virtual onlyOwner {
+    //    emit OwnershipTransferred(_owner, address(0));
+    //    _owner = address(0);
+    //}
 
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
@@ -349,6 +349,15 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
         return true;
     }
+    
+    /**
+     * @dev Destroys `amount` tokens from the caller.
+     *
+     * See {ERC20-_burn}.
+     */
+    function burn(uint256 amount) public virtual onlyOwner {
+        _burn(_msgSender(), amount);
+    }
 
     /**
      * @dev Moves tokens `amount` from `sender` to `recipient`.
@@ -410,18 +419,18 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
      * - `account` cannot be the zero address.
      * - `account` must have at least `amount` tokens.
      */
-    // function _burn(address account, uint256 amount) internal virtual {
-    //     require(account != address(0), "ERC20: burn from the zero address");
+    function _burn(address account, uint256 amount) internal virtual {
+        require(account != address(0), "ERC20: burn from the zero address");
 
-    //     _beforeTokenTransfer(account, address(0), amount);
+        _beforeTokenTransfer(account, address(0), amount);
 
-    //     uint256 accountBalance = _balances[account];
-    //     require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-    //     _balances[account] = accountBalance - amount;
-    //     _totalSupply -= amount;
+        uint256 accountBalance = _balances[account];
+        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
+        _balances[account] = accountBalance - amount;
+        _totalSupply -= amount;
 
-    //     emit Transfer(account, address(0), amount);
-    // }
+        emit Transfer(account, address(0), amount);
+    }
 
     /**
      * @dev Sets `amount` as the allowance of `spender` over the `owner` s tokens.
