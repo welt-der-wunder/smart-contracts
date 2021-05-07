@@ -141,8 +141,8 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata {
      * construction.
      */
     constructor(address account) {
-        _name = "Kosta KST";
-        _symbol = "KST";
+        _name = "Kosta KTA";
+        _symbol = "KTA";
 
         // Mint 200 Million Max Tokens
         _maxTokens = 200000000000000000000000000;
@@ -328,11 +328,12 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata {
      */
     function _mint(address account, uint256 amount) internal virtual {
         require(account != address(0), "ERC20: mint to the zero address");
-        require(_totalSupply <= _maxTokens, "ERC20: limit reached");
         
         _beforeTokenTransfer(address(0), account, amount);
 
         _totalSupply += amount;
+        require(_totalSupply <= _maxTokens, "ERC20: total supply limit reached");
+        
         _balances[account] += amount;
         emit Transfer(address(0), account, amount);
     }
