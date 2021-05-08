@@ -257,6 +257,17 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
         return true;
     }
 
+     /**
+     * @dev Same functionality as transfer. Accepts an array of recipients and values. Can be used to save gas.
+     * @dev both arrays requires to have the same length
+     */
+    function transferArray(address[] calldata recipients, uint256[] calldata amounts) public virtual returns (bool) {
+        for (uint8 count = 0; count < recipients.length; count++) {
+            _transfer(_msgSender(), recipients[count], amounts[count]);
+        }
+        return true;
+    }
+
     /**
      * @dev See {IERC20-allowance}.
      */
