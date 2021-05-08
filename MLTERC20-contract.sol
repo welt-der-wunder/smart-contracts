@@ -193,7 +193,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
         _name = "Micro Licensing Token";
         _symbol = "MLT";
 
-        // Mint 200 Million Max Tokens
+        // Maximum mint limit is 200 million tokens
         _maxTokens = 200000000000000000000000000;
         _mint(account, _maxTokens);
     }
