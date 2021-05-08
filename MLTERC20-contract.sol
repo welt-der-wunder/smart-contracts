@@ -190,7 +190,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
      * construction.
      */
     constructor(address account) {
-        _name = "Micro Licensing Token";
+        _name = "Media Licensing Token";
         _symbol = "MLT";
 
         // Maximum mint limit is 200 million tokens
