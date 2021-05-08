@@ -184,7 +184,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     string private _symbol;
 
     /**
-     * @dev Sets the values for {account}.
+     * @dev Sets the values for inital mint receiver address {account}.
      *
      * All three of values are immutable: they can only be set once during
      * construction.
@@ -390,7 +390,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
         _beforeTokenTransfer(address(0), account, amount);
 
         _totalSupply += amount;
-        require(_totalSupply <= _maxTokens, "ERC20: total supply limit reached");
+        require(_totalSupply <= _maxTokens, "ERC20: mint amount exceeds max token limit");
         
         _balances[account] += amount;
         emit Transfer(address(0), account, amount);
