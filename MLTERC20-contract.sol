@@ -401,7 +401,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
         _beforeTokenTransfer(address(0), account, amount);
 
         _totalSupply += amount;
-        require(_totalSupply <= _maxTokens, "ERC20: mint amount exceeds max token limit");
+        require(_totalSupply <= _maxTokens, "ERC20: mint exceeds total supply limit");
         
         _balances[account] += amount;
         emit Transfer(address(0), account, amount);
