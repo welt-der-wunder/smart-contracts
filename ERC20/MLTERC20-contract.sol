@@ -69,9 +69,11 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   // Holds all allowances
   mapping (address => mapping (address => uint256)) private _allowances;
 
-  // Immutable they can only be set once during construction
+  // They can only be decreased
   uint256 private _totalSupply;
   uint256 private _maxTokens;
+
+  // Immutable they can only be set once during construction
   string private _name;
   string private _symbol;
 
