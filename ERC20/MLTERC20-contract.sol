@@ -80,6 +80,9 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   string private _symbol;
   uint256 private _maxTokens;
 
+  // Events
+  event Blocklist(address indexed account, bool indexed option);
+
   // The initializer of our contract
   constructor(address account) {
     _name = "Media Licensing Token";
@@ -204,7 +207,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     require(account != _msgSender(), "ERC20: you can not block yourself");
     _blocklist[account] = option;
 
-    //emit Blacklist(account, option);
+    emit Blocklist(account, option);
   }
 
   // Implements the transfer function for a given sender, recipient and amount
@@ -265,6 +268,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {
     require(_blocklist[from] == false && _blocklist[to] == false, "MLTERC20: transfer not allowed");
-    _temp = amount; // stop the warning
+    require(amount > 0, "ERC20: amount must be bigger that 0");
   }
 }
