@@ -71,14 +71,14 @@ contract MLTBEP20 is Context, IERC20, IERC20Metadata, Ownable {
 
   // They can only be decreased
   uint256 private _totalSupply;
-  uint256 private _maxTokens;
 
   // Immutable they can only be set once during construction
   string private _name;
   string private _symbol;
+  uint256 private _maxTokens;
 
   // The initializer of our contract
-  constructor {
+  constructor () {
     _name = "Media Licensing Token";
     _symbol = "MLT";
 
@@ -90,7 +90,7 @@ contract MLTBEP20 is Context, IERC20, IERC20Metadata, Ownable {
    * PUBLIC RETURNS
    */
 
-  // Returns the name of the token.
+  // Returns the name of the token
   function name() public view virtual override returns (string memory) {
     return _name;
   }
@@ -226,8 +226,6 @@ contract MLTBEP20 is Context, IERC20, IERC20Metadata, Ownable {
     require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
     _balances[account] = accountBalance - amount;
     _totalSupply -= amount;
-    // When we burn we need to remove it also from max tokens
-    _maxTokens -= amount;
 
     emit Transfer(account, address(0), amount);
   }

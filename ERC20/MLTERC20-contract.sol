@@ -71,11 +71,11 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
   // They can only be decreased
   uint256 private _totalSupply;
-  uint256 private _maxTokens;
 
   // Immutable they can only be set once during construction
   string private _name;
   string private _symbol;
+  uint256 private _maxTokens;
 
   // The initializer of our contract
   constructor(address account) {
@@ -223,8 +223,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
     _balances[account] = accountBalance - amount;
     _totalSupply -= amount;
-    // Paranoid security
-    _maxTokens -= amount;
 
     emit Transfer(account, address(0), amount);
   }
