@@ -72,9 +72,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   // Holds all blacklisted addresses
   mapping (address => bool) private _blocklist;
 
-  // Controled by Capital Control
-  uint256 private _maxCapital;
-
   // They can only be decreased
   uint256 private _totalSupply;
 
@@ -85,7 +82,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
   // Events
   event Blocklist(address indexed account, bool indexed option);
-  event CapitalControl(uint256 amount);
 
   // The initializer of our contract
   constructor(address account) {
@@ -94,7 +90,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
     // Holds max mintable limit, 200 million tokens
     _maxTokens = 200000000000000000000000000;
-    _maxCapital = _maxTokens;
     _mint(account, _maxTokens);
   }
 
@@ -135,11 +130,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   // Returns a blocked address of a given address
   function isBlocked(address account) public view virtual returns (bool) {
     return _blocklist[account];
-  }
-
-  // Returns the amount of capital control
-  function capitalControl() public view virtual returns (uint256) {
-    return _maxCapital;
   }
 
   /*
@@ -201,36 +191,20 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     _burn(_msgSender(), amount);
   }
 
-  function blockAddress(address account) public virtual onlyOwner {
+  function blockAddress (address account) public virtual onlyOwner {
     _block(account, true);
   }
 
-  function unblockAddress(address account) public virtual onlyOwner {
+  function unblockAddress (address account) public virtual onlyOwner {
     _block(account, false);
-  }
-
-  function setCapitalControl(uint256 amount) public virtual onlyOwner {
-    _capitalControl(amount);
-  }
-
-  function resetCapitalControl() public virtual onlyOwner {
-    _capitalControl(_totalSupply);
   }
 
   /*
    * INTERNAL (PRIVATE)
    */
 
-  function _capitalControl(uint256 amount) internal virtual {
-    require(amount >= 0, "ERC20: amount is smaller than zero");
-    require(amount <= _totalSupply, "ERC20: amount exceeds total supply ");
-    _maxCapital = amount;
-
-    emit CapitalControl(amount);
-  }
-
   function _block (address account, bool option) internal virtual {
-    require(account != _msgSender(), "ERC20: you can not block or unblock yourself");
+    require(account != _msgSender(), "ERC20: message sender can not block or unblock himself");
     _blocklist[account] = option;
 
     emit Blocklist(account, option);
@@ -294,6 +268,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {
     require(_blocklist[from] == false && _blocklist[to] == false, "MLTERC20: transfer not allowed");
-    require(_maxCapital >= amount, "ERC20: amount must the same or below capital controls");
+    require(amount > 0, "ERC20: amount must be above zero");
   }
 }
