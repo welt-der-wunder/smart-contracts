@@ -69,6 +69,9 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   // Holds all allowances
   mapping (address => mapping (address => uint256)) private _allowances;
 
+  // Holds all blacklisted addresses
+  mapping (address => bool) private _blocklist;
+
   // They can only be decreased
   uint256 private _totalSupply;
 
@@ -119,6 +122,11 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   // Returns the allowances of the given addresses
   function allowance(address owner, address spender) public view virtual override returns (uint256) {
     return _allowances[owner][spender];
+  }
+
+  // Returns a blocked address of a given address
+  function isBlocked(address account) public view virtual returns (bool) {
+    return _blocklist[account];
   }
 
   /*
@@ -180,9 +188,24 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     _burn(_msgSender(), amount);
   }
 
+  function blockAddress (address account) public virtual onlyOwner {
+    _block(account, true);
+  }
+
+  function unblockAddress (address account) public virtual onlyOwner {
+    _block(account, false);
+  }
+
   /*
    * INTERNAL (PRIVATE)
    */
+
+  function _block (address account, bool option) internal virtual {
+    require(account != _msgSender(), "ERC20: you can not block yourself");
+    _blocklist[account] = option;
+
+    //emit Blacklist(account, option);
+  }
 
   // Implements the transfer function for a given sender, recipient and amount
   function _transfer(address sender, address recipient, uint256 amount) internal virtual {
@@ -240,6 +263,8 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
    * INTERNAL (PRIVATE) HELPERS
    */
 
-  // Will see if we need that
-  function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual { }
+  function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {
+    require(_blocklist[from] == false && _blocklist[to] == false, "MLTERC20: transfer not allowed");
+    _temp = amount; // stop the warning
+  }
 }
