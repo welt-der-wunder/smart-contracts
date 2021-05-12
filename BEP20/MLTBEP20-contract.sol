@@ -61,7 +61,7 @@ abstract contract Ownable is Context {
   }
 }
 
-contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
+contract MLTBEP20 is Context, IERC20, IERC20Metadata, Ownable {
 
   // Holds all the balances
   mapping (address => uint256) private _balances;
@@ -76,13 +76,12 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   string private _symbol;
 
   // The initializer of our contract
-  constructor(address account) {
+  constructor {
     _name = "Media Licensing Token";
     _symbol = "MLT";
 
-    // Holds max mintable limit, 200 million tokens
+    // Holds 200 million tokens
     _maxTokens = 200000000000000000000000000;
-    _mint(account, _maxTokens);
   }
 
   /*
@@ -173,6 +172,11 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
    * PUBLIC (Only Owner)
    */
 
+  // Calls the _mint internal function for a given amount
+  function mint(uint256 amount) public virtual onlyOwner {
+    _mint(_msgSender(), amount);
+  }
+
   // Calls the _burn internal function for a given amount
   function burn(uint256 amount) public virtual onlyOwner {
     _burn(_msgSender(), amount);
@@ -204,7 +208,6 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     _beforeTokenTransfer(address(0), account, amount);
 
     _totalSupply += amount;
-    // Paranoid security
     require(_totalSupply <= _maxTokens, "ERC20: mint exceeds total supply limit");
 
     _balances[account] += amount;
@@ -221,7 +224,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
     require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
     _balances[account] = accountBalance - amount;
     _totalSupply -= amount;
-    // Paranoid security
+    // When we burn we need to remove it also from max tokens
     _maxTokens -= amount;
 
     emit Transfer(account, address(0), amount);
