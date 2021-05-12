@@ -204,7 +204,7 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
    */
 
   function _block (address account, bool option) internal virtual {
-    require(account != _msgSender(), "ERC20: you can not block yourself");
+    require(account != _msgSender(), "ERC20: you can not block or unblock yourself");
     _blocklist[account] = option;
 
     emit Blocklist(account, option);
