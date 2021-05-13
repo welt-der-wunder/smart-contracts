@@ -61,7 +61,7 @@ abstract contract Ownable is Context {
   }
 }
 
-contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
+contract MLT_ERC20 is Context, IERC20, IERC20Metadata, Ownable {
 
   // Holds all the balances
   mapping (address => uint256) private _balances;
@@ -84,13 +84,13 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
   event Blocklist(address indexed account, bool indexed option);
 
   // The initializer of our contract
-  constructor(address account) {
+  constructor () {
     _name = "Media Licensing Token";
     _symbol = "MLT";
 
     // Holds max mintable limit, 200 million tokens
     _maxTokens = 200000000000000000000000000;
-    _mint(account, _maxTokens);
+    _mint(_msgSender(), _maxTokens);
   }
 
   /*
@@ -203,11 +203,11 @@ contract MLTERC20 is Context, IERC20, IERC20Metadata, Ownable {
    * INTERNAL (PRIVATE)
    */
 
-  function _block (address account, bool option) internal virtual {
+  function _block (address account, bool status) internal virtual {
     require(account != _msgSender(), "ERC20: message sender can not block or unblock himself");
-    _blocklist[account] = option;
+    _blocklist[account] = status;
 
-    emit Blocklist(account, option);
+    emit Blocklist(account, status);
   }
 
   // Implements the transfer function for a given sender, recipient and amount
