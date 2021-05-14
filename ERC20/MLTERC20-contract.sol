@@ -61,6 +61,7 @@ abstract contract Ownable is Context {
   }
 }
 
+// Our main contract which implements ERC20 standard methods
 contract MediaLicensingToken is Context, IERC20, IERC20Metadata, Ownable {
 
   // Holds all the balances
