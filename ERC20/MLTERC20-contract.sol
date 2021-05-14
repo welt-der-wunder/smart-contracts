@@ -81,7 +81,7 @@ contract MLT_ERC20 is Context, IERC20, IERC20Metadata, Ownable {
   uint256 private _maxTokens;
 
   // Events
-  event Blocklist(address indexed account, bool indexed option);
+  event Blocklist(address indexed account, bool indexed status);
 
   // The initializer of our contract
   constructor () {
