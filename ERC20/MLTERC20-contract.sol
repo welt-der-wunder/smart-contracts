@@ -61,7 +61,7 @@ abstract contract Ownable is Context {
   }
 }
 
-contract MLT_ERC20 is Context, IERC20, IERC20Metadata, Ownable {
+contract MediaLicensingToken is Context, IERC20, IERC20Metadata, Ownable {
 
   // Holds all the balances
   mapping (address => uint256) private _balances;
